@@ -1,0 +1,15 @@
+{
+    "name": "app_h5",
+    "version": "1.0.0",
+    "description": "add readme",
+    "main": "index.js",
+    "scripts": {
+      "server": "live-server ./ --port=9098"
+    },
+    "repository": {
+      "type": "git",
+      "url": "git@code.aliyun.com:mfcar_web/app_h5.git"
+    },
+    "author": "",
+    "license": "ISC"
+  }
