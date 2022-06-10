@@ -78,6 +78,10 @@ public class ColorUtils {
     private static int green5 = 0xDE;
     private static int blue5 = 0x94;
 
+    private static int redbg = 0xFF;
+    private static int greenbg = 0xFF;
+    private static int bluebg = 0xFF;
+
     //同步对象
     private static Object object = new Object();
 
@@ -102,91 +106,97 @@ public class ColorUtils {
                     int green = (clr & 0x0000ff00) >> 8; // 取中两位
                     int blue = clr & 0x000000ff; // 取低两位
 
-                    if (clr != -1) {//去除背景色
-                        executorService.submit(new Runnable() {
-                            @Override
-                            public void run() {
-                                int min = Integer.MAX_VALUE;
-                                int score = 0;
-                                //计算靠近哪个色卡值最近
-                                int result = ColorUtils.getColor4(red, green, blue);
-                                if (result < min) {
-                                    min = result;
-                                    score = 4;
-                                }
-                                result = ColorUtils.getColor5(red, green, blue);
-                                if (result < min) {
-                                    min = result;
-                                    score = 5;
-                                }
-                                result = ColorUtils.getColor6(red, green, blue);
-                                if (result < min) {
-                                    min = result;
-                                    score = 6;
-                                }
-                                result = ColorUtils.getColor7(red, green, blue);
-                                if (result < min) {
-                                    min = result;
-                                    score = 7;
-                                }
-                                result = ColorUtils.getColor8(red, green, blue);
-                                if (result < min) {
-                                    min = result;
-                                    score = 8;
-                                }
-                                result = ColorUtils.getColor9(red, green, blue);
-                                if (result < min) {
-                                    min = result;
-                                    score = 9;
-                                }
-                                result = ColorUtils.getColor10( red, green, blue);
-                                if (result < min) {
-                                    min = result;
-                                    score = 10;
-                                }
-                                result = ColorUtils.getColor11( red, green, blue);
-                                if (result < min) {
-                                    min = result;
-                                    score = 11;
-                                }
-                                result = ColorUtils.getColor12(red, green, blue);
-                                if (result < min) {
-                                    min = result;
-                                    score = 12;
-                                }
-                                result = ColorUtils.getColor13(red, green, blue);
-                                if (result < min) {
-                                    min = result;
-                                    score = 13;
-                                }
-                                result = ColorUtils.getColor14(red, green, blue);
-                                if (result < min) {
-                                    min = result;
-                                    score = 14;
-                                }
-                                result = ColorUtils.getColor15( red, green, blue);
-                                if (result < min) {
-                                    min = result;
-                                    score = 15;
-                                }
-                                result = ColorUtils.getColor16(red, green, blue);
-                                if (result < min) {
-                                    min = result;
-                                    score = 16;
-                                }
-                                result = ColorUtils.getColor17( red, green, blue);
-                                if (result < min) {
-                                    min = result;
-                                    score = 17;
-                                }
-                                synchronized (object) {
-                                    totalScore[0] = totalScore[0] + score;
-                                    totalPixels[0]++;
-//                                    LogUtils.e("score=" + totalPixels[0]);
-                                }
+
+                    executorService.submit(new Runnable() {
+                        @Override
+                        public void run() {
+                            int min = Integer.MAX_VALUE;
+                            int score = 0;
+                            //计算靠近哪个色卡值最近
+                            int result = ColorUtils.getColor4(red, green, blue);
+                            if (result < min) {
+                                min = result;
+                                score = 4;
                             }
-                        });
-                    }
+                            result = ColorUtils.getColor5(red, green, blue);
+                            if (result < min) {
+                                min = result;
+                                score = 5;
+                            }
+                            result = ColorUtils.getColor6(red, green, blue);
+                            if (result < min) {
+                                min = result;
+                                score = 6;
+                            }
+                            result = ColorUtils.getColor7(red, green, blue);
+                            if (result < min) {
+                                min = result;
+                                score = 7;
+                            }
+                            result = ColorUtils.getColor8(red, green, blue);
+                            if (result < min) {
+                                min = result;
+                                score = 8;
+                            }
+                            result = ColorUtils.getColor9(red, green, blue);
+                            if (result < min) {
+                                min = result;
+                                score = 9;
+                            }
+                            result = ColorUtils.getColor10( red, green, blue);
+                            if (result < min) {
+                                min = result;
+                                score = 10;
+                            }
+                            result = ColorUtils.getColor11( red, green, blue);
+                            if (result < min) {
+                                min = result;
+                                score = 11;
+                            }
+                            result = ColorUtils.getColor12(red, green, blue);
+                            if (result < min) {
+                                min = result;
+                                score = 12;
+                            }
+                            result = ColorUtils.getColor13(red, green, blue);
+                            if (result < min) {
+                                min = result;
+                                score = 13;
+                            }
+                            result = ColorUtils.getColor14(red, green, blue);
+                            if (result < min) {
+                                min = result;
+                                score = 14;
+                            }
+                            result = ColorUtils.getColor15( red, green, blue);
+                            if (result < min) {
+                                min = result;
+                                score = 15;
+                            }
+                            result = ColorUtils.getColor16(red, green, blue);
+                            if (result < min) {
+                                min = result;
+                                score = 16;
+                            }
+                            result = ColorUtils.getColor17( red, green, blue);
+                            if (result < min) {
+                                min = result;
+                                score = 17;
+                            }
+                            //背景色不计入
+                            result = ColorUtils.getColorBG(red, green, blue);
+                            if (result < min) {
+                                min = result;
+                                return;
+                            }
+                            synchronized (object) {
+                                totalScore[0] = totalScore[0] + score;
+                                totalPixels[0]++;
+//                                    LogUtils.e("score=" + totalPixels[0]);
+                            }
+                        }
+                    });
+
                 }
                 //判断线程池结束
                 while (true) {
@@ -205,6 +215,12 @@ public class ColorUtils {
             }
         }.start();
     }
+    public static int getColorBG(int red, int green, int blue) {
+        int distance = ((red-redbg)*(red-redbg) + (green-greenbg)*(green-greenbg) + (blue-bluebg)*(blue-bluebg));
+//        LogUtils.e("getColorBG=" + distance);
+        return distance;
+    }
+
     public static int getColor17(int red, int green, int blue) {
 
         int distance = ((red-red17)*(red-red17) + (green-green17)*(green-green17) + (blue-blue17)*(blue-blue17));

@@ -1,6 +1,7 @@
 package com.example.myapplication;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.core.app.ActivityCompat;
@@ -24,6 +25,7 @@ import android.hardware.camera2.CameraDevice;
 import android.hardware.camera2.CameraManager;
 import android.media.Image;
 import android.media.ImageReader;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -36,6 +38,7 @@ import android.serialport.helper.SphResultCallback;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -48,17 +51,16 @@ import com.bean.Contributor;
 import com.example.myapplication.databinding.ActivityMainBinding;
 
 import com.example.myapplication.http.RetrofitClient;
-import com.example.myapplication.ui.TestActivity;
+import com.example.myapplication.ui.PictureActivity;
 import com.tbruyelle.rxpermissions.RxPermissions;
 import com.utils.ColorUtils;
-import com.utils.LogUtils;
 import com.utils.MsgUtils;
+import com.utils.PickImageHelperTwo;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -106,7 +108,14 @@ public class MainActivity extends AppCompatActivity {
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
+        View mStateBarFixer = binding.statusBarFix;
+        if (mStateBarFixer != null) {
+            ViewGroup.LayoutParams layoutParams = mStateBarFixer.getLayoutParams();
+            layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
+            layoutParams.height = 100;
+            mStateBarFixer.setLayoutParams(layoutParams);
+            mStateBarFixer.setBackgroundColor(Color.BLACK);
+        }
         // Example of a call to a native method
         TextView tv = binding.sampleText;
         tv.setText("");
@@ -127,7 +136,17 @@ public class MainActivity extends AppCompatActivity {
 //                Intent intent = new Intent();
 //                intent.setClass(MainActivity.this, TestActivity.class);
 //                startActivity(intent);
-                getPicturePixel(getBitMapInfo(MainActivity.this));
+//                getPicturePixel(getBitMapInfo(MainActivity.this));
+//                DialogType0 dialogType0 = new DialogType0(MainActivity.this);
+//                dialogType0.setListeners(new IRokiDialog.DialogOnClickListener() {
+//                    @Override
+//                    public void onClick(View v, int position) {
+//
+//                    }
+//                }, R.id.common_dialog_ok_btn, R.id.common_dialog_cancel_btn);
+//                dialogType0.setCancelable(false);
+//                dialogType0.show();
+                PickImageHelperTwo.showPickDialog(MainActivity.this, PickImageHelperTwo.PHOTO_REQUEST_GALLERY , 1);
             }
         });
 
@@ -427,5 +446,32 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         return bitmap;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (PickImageHelperTwo.PHOTO_REQUEST_GALLERY == requestCode) {
+            if (null != data) {
+                PickImageHelperTwo.setImageUri(data.getData());
+                Intent intent = new Intent();
+
+                intent.setClass(this, PictureActivity.class);
+                startActivity(intent);
+            }
+
+        } else if (PickImageHelperTwo.PHOTO_REQUEST_CAMERA == requestCode) {
+
+            Intent intent = new Intent();
+            intent.setClass(this, PictureActivity.class);
+            startActivity(intent);
+
+        }
     }
 }
