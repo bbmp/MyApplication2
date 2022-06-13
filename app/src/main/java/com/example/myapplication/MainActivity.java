@@ -8,6 +8,7 @@ import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.UiModeManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -51,9 +52,12 @@ import com.bean.Contributor;
 import com.example.myapplication.databinding.ActivityMainBinding;
 
 import com.example.myapplication.http.RetrofitClient;
+import com.example.myapplication.skin.SkinStatusBarUtils;
+import com.example.myapplication.ui.DrawerActivity;
 import com.example.myapplication.ui.PictureActivity;
 import com.tbruyelle.rxpermissions.RxPermissions;
 import com.utils.ColorUtils;
+import com.utils.LogUtils;
 import com.utils.MsgUtils;
 import com.utils.PickImageHelperTwo;
 
@@ -105,17 +109,22 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+//        SkinStatusBarUtils.setStatusBarLightMode(this);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        View mStateBarFixer = binding.statusBarFix;
-        if (mStateBarFixer != null) {
-            ViewGroup.LayoutParams layoutParams = mStateBarFixer.getLayoutParams();
-            layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
-            layoutParams.height = 100;
-            mStateBarFixer.setLayoutParams(layoutParams);
-            mStateBarFixer.setBackgroundColor(Color.BLACK);
+//        View mStateBarFixer = binding.statusBarFix;
+//        if (mStateBarFixer != null) {
+//            ViewGroup.LayoutParams layoutParams = mStateBarFixer.getLayoutParams();
+//            layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
+//            layoutParams.height = 100;
+//            mStateBarFixer.setLayoutParams(layoutParams);
+//            mStateBarFixer.setBackgroundColor(Color.BLACK);
+//        }
+        UiModeManager uiModeManager = (UiModeManager) getSystemService(Context.UI_MODE_SERVICE);
+        if (uiModeManager.getNightMode()==UiModeManager.MODE_NIGHT_YES) {
+            LogUtils.e("night");
         }
+
         // Example of a call to a native method
         TextView tv = binding.sampleText;
         tv.setText("");
@@ -146,7 +155,10 @@ public class MainActivity extends AppCompatActivity {
 //                }, R.id.common_dialog_ok_btn, R.id.common_dialog_cancel_btn);
 //                dialogType0.setCancelable(false);
 //                dialogType0.show();
-                PickImageHelperTwo.showPickDialog(MainActivity.this, PickImageHelperTwo.PHOTO_REQUEST_GALLERY , 1);
+//                PickImageHelperTwo.showPickDialog(MainActivity.this, PickImageHelperTwo.PHOTO_REQUEST_GALLERY , 1);
+                Intent intent = new Intent();
+                intent.setClass(MainActivity.this, DrawerActivity.class);
+                startActivity(intent);
             }
         });
 
