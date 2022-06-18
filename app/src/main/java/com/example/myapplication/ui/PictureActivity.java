@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.myapplication.R;
 import com.example.myapplication.skin.SkinStatusBarUtils;
@@ -64,7 +65,22 @@ public class PictureActivity extends AppCompatActivity {
 
                 imageView.setImageBitmap(bitmap);
 
-                ColorUtils.caculate(bitmap);
+                ColorUtils.caculate(bitmap, new ColorUtils.CaculateCallback() {
+                    @Override
+                    public void onSuccess(double score) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(PictureActivity.this, "Score= "+ score, Toast.LENGTH_LONG).show();
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onFailed() {
+
+                    }
+                });
             } catch (Exception e) {
                 e.printStackTrace();
                 finish();

@@ -27,6 +27,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
+import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
@@ -59,6 +60,8 @@ public class DrawerActivity extends AppCompatActivity {
             }
         });
         ImageView imageView = binding.imageView;
+        TextView tvTitle = binding.tvTitle;
+        TextView textView = binding.textView;
 
         test.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,8 +89,22 @@ public class DrawerActivity extends AppCompatActivity {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                NavOptions options = new NavOptions.Builder()
+                        .setPopUpTo(navController.getCurrentDestination().getId(), true)
+                        .setLaunchSingleTop(true)
+                        .build();
                 //跳转
-                navController.navigate(R.id.navigation_dashboard);
+                navController.navigate(R.id.navigation_dashboard, null , options);
+            }
+        });
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavOptions options = new NavOptions.Builder()
+                        .setPopUpTo(navController.getCurrentDestination().getId(), true)
+                        .setLaunchSingleTop(true)
+                        .build();
+                navController.navigate(R.id.navigation_notifications, null, options);
             }
         });
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

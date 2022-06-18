@@ -85,7 +85,7 @@ public class ColorUtils {
     //同步对象
     private static Object object = new Object();
 
-    public static void caculate(Bitmap bitmap) {
+    public static void caculate(Bitmap bitmap, CaculateCallback callback) {
         new Thread() {
             @Override
             public void run() {
@@ -212,6 +212,8 @@ public class ColorUtils {
                 LogUtils.e("totalScore=" + totalScore[0]);
                 LogUtils.e("totalPixels=" + totalPixels[0]);
                 LogUtils.e("score=" + totalScore[0]/totalPixels[0]);
+                if (null != callback)
+                    callback.onSuccess(totalScore[0]/totalPixels[0]);
             }
         }.start();
     }
@@ -316,5 +318,10 @@ public class ColorUtils {
         int distance = ((red-red16)*(red-red16) + (green-green16)*(green-green16) + (blue-blue16)*(blue-blue16));
 //        LogUtils.e("distance16=" + distance);
         return distance;
+    }
+
+    public interface CaculateCallback {
+        void onSuccess(double score);
+        void onFailed();
     }
 }
