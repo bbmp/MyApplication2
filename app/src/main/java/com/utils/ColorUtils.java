@@ -5,8 +5,11 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 
 import com.example.myapplication.R;
+import com.example.myapplication.bean.Point;
+import com.example.myapplication.bean.Round;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
@@ -84,6 +87,116 @@ public class ColorUtils {
 
     //同步对象
     private static Object object = new Object();
+
+    public static void caculate(List<Point> points, String area) {
+        if (null != points) {
+            new Thread() {
+                @Override
+                public void run() {
+                    int totalPixels = 0;
+                    double totalScore = 0;
+
+                    for (int i = 0; i < points.size(); i++) {
+                        int clr = points.get(i).color;
+                        int red = (clr & 0x00ff0000) >> 16; // 取⾼两位
+                        int green = (clr & 0x0000ff00) >> 8; // 取中两位
+                        int blue = clr & 0x000000ff; // 取低两位
+
+                        int min = Integer.MAX_VALUE;
+                        int score = 0;
+                        //计算靠近哪个色卡值最近
+                        int result = ColorUtils.getColor4(red, green, blue);
+                        if (result < min) {
+                            min = result;
+                            score = 4;
+                        }
+                        result = ColorUtils.getColor5(red, green, blue);
+                        if (result < min) {
+                            min = result;
+                            score = 5;
+                        }
+                        result = ColorUtils.getColor6(red, green, blue);
+                        if (result < min) {
+                            min = result;
+                            score = 6;
+                        }
+                        result = ColorUtils.getColor7(red, green, blue);
+                        if (result < min) {
+                            min = result;
+                            score = 7;
+                        }
+                        result = ColorUtils.getColor8(red, green, blue);
+                        if (result < min) {
+                            min = result;
+                            score = 8;
+                        }
+                        result = ColorUtils.getColor9(red, green, blue);
+                        if (result < min) {
+                            min = result;
+                            score = 9;
+                        }
+                        result = ColorUtils.getColor10( red, green, blue);
+                        if (result < min) {
+                            min = result;
+                            score = 10;
+                        }
+                        result = ColorUtils.getColor11( red, green, blue);
+                        if (result < min) {
+                            min = result;
+                            score = 11;
+                        }
+                        result = ColorUtils.getColor12(red, green, blue);
+                        if (result < min) {
+                            min = result;
+                            score = 12;
+                        }
+                        result = ColorUtils.getColor13(red, green, blue);
+                        if (result < min) {
+                            min = result;
+                            score = 13;
+                        }
+                        result = ColorUtils.getColor14(red, green, blue);
+                        if (result < min) {
+                            min = result;
+                            score = 14;
+                        }
+                        result = ColorUtils.getColor15( red, green, blue);
+                        if (result < min) {
+                            min = result;
+                            score = 15;
+                        }
+                        result = ColorUtils.getColor16(red, green, blue);
+                        if (result < min) {
+                            min = result;
+                            score = 16;
+                        }
+                        result = ColorUtils.getColor17( red, green, blue);
+                        if (result < min) {
+                            min = result;
+                            score = 17;
+                        }
+                        //背景色不计入
+                        result = ColorUtils.getColorBG(red, green, blue);
+                        if (result < min) {
+                            min = result;
+                            return;
+                        }
+                        totalScore = totalScore + score;
+                        totalPixels++;
+//                                    LogUtils.e("score=" + totalPixels[0]);
+
+
+                    }
+
+                    //计算平均分
+//                    LogUtils.e("totalScore=" + totalScore);
+//                    LogUtils.e("totalPixels=" + totalPixels);
+                    LogUtils.e(area + "score=" + totalScore/totalPixels);
+
+                }
+            }.start();
+        }
+    }
 
     public static void caculate(Bitmap bitmap, CaculateCallback callback) {
         new Thread() {

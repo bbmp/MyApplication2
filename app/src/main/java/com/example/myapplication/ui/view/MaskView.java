@@ -21,6 +21,8 @@ import com.example.myapplication.bean.Point;
 import com.example.myapplication.bean.Round;
 import com.example.myapplication.bean.Shape;
 import com.example.myapplication.bean.Square;
+import com.utils.ColorUtils;
+import com.utils.LogUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +57,7 @@ public class MaskView extends View {
     public MaskView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
-        bitmap = BitmapFactory.decodeResource(context.getResources(), R.mipmap.wet);
+//        bitmap = BitmapFactory.decodeResource(context.getResources(), R.mipmap.wet);
 
     }
 
@@ -68,16 +70,23 @@ public class MaskView extends View {
         super(context, attrs, defStyleAttr, defStyleRes);
         this.context = context;
     }
+
+    public void setBitmap(Bitmap bitmap) {
+        this.bitmap = bitmap;
+        invalidate();
+    }
     //add a round
     public void addRound() {
-        for (int i = 0; i< rShape.size(); i++) {
-            rShape.get(i).select = false;
+        if (null != bitmap) {
+            for (int i = 0; i < rShape.size(); i++) {
+                rShape.get(i).select = false;
+            }
+            Round round = new Round(bitmap.getWidth() / 2, bitmap.getHeight() / 2);
+            round.r = initR;
+            round.select = true;
+            rShape.add(round);
+            invalidate();
         }
-        Round round = new Round(getWidth()/2, getHeight()/2);
-        round.r = initR;
-        round.select =true;
-        rShape.add(round);
-        invalidate();
     }
 
     public void addSquare() {
@@ -125,61 +134,63 @@ public class MaskView extends View {
             }
         }
 
-//        int height = getHeight();
-//        Paint paint = new Paint();
-//        for (int i=0; i<Area9.size();i++) {
-//            paint.setColor(Area9.get(i).color);
-//            canvas.drawPoint(Area9.get(i).x, Area9.get(i).y, paint);
-//        }
-//        for (int i=0; i<Area1.size();i++) {
-//            paint.setColor(Area1.get(i).color);
-//            canvas.drawPoint(Area1.get(i).x, Area1.get(i).y, paint);
-//        }
-//        for (int i=0; i<Area2.size();i++) {
-//            paint.setColor(Area2.get(i).color);
-//            canvas.drawPoint(Area2.get(i).x, Area2.get(i).y, paint);
-//        }
-//        for (int i=0; i<Area3.size();i++) {
-//            paint.setColor(Area3.get(i).color);
-//            canvas.drawPoint(Area3.get(i).x, Area3.get(i).y, paint);
-//        }
-//        for (int i=0; i<Area4.size();i++) {
-//            paint.setColor(Area4.get(i).color);
-//            canvas.drawPoint(Area4.get(i).x, Area4.get(i).y, paint);
-//        }
-//        for (int i=0; i<Area5.size();i++) {
-//            paint.setColor(Area5.get(i).color);
-//            canvas.drawPoint(Area5.get(i).x, Area5.get(i).y, paint);
-//        }
-//        for (int i=0; i<Area6.size();i++) {
-//            paint.setColor(Area6.get(i).color);
-//            canvas.drawPoint(Area6.get(i).x, Area6.get(i).y, paint);
-//        }
-//        for (int i=0; i<Area7.size();i++) {
-//            paint.setColor(Area7.get(i).color);
-//            canvas.drawPoint(Area7.get(i).x, Area7.get(i).y, paint);
-//        }
-//        for (int i=0; i<Area8.size();i++) {
-//            paint.setColor(Area8.get(i).color);
-//            canvas.drawPoint(Area8.get(i).x, Area8.get(i).y, paint);
-//        }
-//        for (int i=0; i<Area10.size();i++) {
-//            paint.setColor(Area10.get(i).color);
-//            canvas.drawPoint(Area10.get(i).x, Area10.get(i).y, paint);
-//        }
-//        for (int i=0; i<Area11.size();i++) {
-//            paint.setColor(Area11.get(i).color);
-//            canvas.drawPoint(Area11.get(i).x, Area11.get(i).y, paint);
-//        }
-//        for (int i=0; i<Area12.size();i++) {
-//            paint.setColor(Area12.get(i).color);
-//            canvas.drawPoint(Area12.get(i).x, Area12.get(i).y, paint);
-//        }
-//        for (int i=0; i<Area13.size();i++) {
-//            paint.setColor(Area13.get(i).color);
-//            canvas.drawPoint(Area13.get(i).x, Area13.get(i).y, paint);
-//        }
-
+        for (int j = 0; j < rShape.size(); j++) {
+            Round round = (Round) rShape.get(j);
+            int height = getHeight();
+            Paint paint = new Paint();
+            for (int i = 0; i < round.Area9.size(); i++) {
+                paint.setColor(Color.RED);
+                canvas.drawPoint(round.Area9.get(i).x, round.Area9.get(i).y, paint);
+            }
+            for (int i = 0; i < round.Area1.size(); i++) {
+                paint.setColor(round.Area1.get(i).color);
+                canvas.drawPoint(round.Area1.get(i).x+240, round.Area1.get(i).y, paint);
+            }
+            for (int i = 0; i < round.Area2.size(); i++) {
+                paint.setColor(round.Area2.get(i).color);
+                canvas.drawPoint(round.Area2.get(i).x+240, round.Area2.get(i).y, paint);
+            }
+            for (int i = 0; i < round.Area3.size(); i++) {
+                paint.setColor(round.Area3.get(i).color);
+                canvas.drawPoint(round.Area3.get(i).x+240, round.Area3.get(i).y, paint);
+            }
+            for (int i = 0; i < round.Area4.size(); i++) {
+                paint.setColor(round.Area4.get(i).color);
+                canvas.drawPoint(round.Area4.get(i).x+240, round.Area4.get(i).y, paint);
+            }
+            for (int i = 0; i < round.Area5.size(); i++) {
+                paint.setColor(round.Area5.get(i).color);
+                canvas.drawPoint(round.Area5.get(i).x+240, round.Area5.get(i).y, paint);
+            }
+//            for (int i = 0; i < Area6.size(); i++) {
+//                paint.setColor(Area6.get(i).color);
+//                canvas.drawPoint(Area6.get(i).x, Area6.get(i).y, paint);
+//            }
+//            for (int i = 0; i < Area7.size(); i++) {
+//                paint.setColor(Area7.get(i).color);
+//                canvas.drawPoint(Area7.get(i).x, Area7.get(i).y, paint);
+//            }
+//            for (int i = 0; i < Area8.size(); i++) {
+//                paint.setColor(Area8.get(i).color);
+//                canvas.drawPoint(Area8.get(i).x, Area8.get(i).y, paint);
+//            }
+//            for (int i = 0; i < Area10.size(); i++) {
+//                paint.setColor(Area10.get(i).color);
+//                canvas.drawPoint(Area10.get(i).x, Area10.get(i).y, paint);
+//            }
+//            for (int i = 0; i < Area11.size(); i++) {
+//                paint.setColor(Area11.get(i).color);
+//                canvas.drawPoint(Area11.get(i).x, Area11.get(i).y, paint);
+//            }
+//            for (int i = 0; i < Area12.size(); i++) {
+//                paint.setColor(Area12.get(i).color);
+//                canvas.drawPoint(Area12.get(i).x, Area12.get(i).y, paint);
+//            }
+//            for (int i = 0; i < Area13.size(); i++) {
+//                paint.setColor(Area13.get(i).color);
+//                canvas.drawPoint(Area13.get(i).x, Area13.get(i).y, paint);
+//            }
+        }
     }
 
     @Override
@@ -198,6 +209,8 @@ public class MaskView extends View {
                                 rShape.get(j).select = false;
 
                             round.select = true;
+                            for (int j=0; j<rShape.size(); j++)
+                                LogUtils.e("select +" + rShape.get(j).select);
                             invalidate();
                             move = true;
                             ClickX = event.getX();
@@ -242,9 +255,13 @@ public class MaskView extends View {
                                 float dy = ev_y - ClickY;
                                 ClickX = ev_x;
                                 ClickY = ev_y;
-
-                                rShape.get(0).x += dx;
-                                rShape.get(0).y += dy;
+                                if (shape.x+dx>=bitmap.getWidth() || shape.x+dx <= 0
+                                    || shape.y+dy>=bitmap.getHeight()
+                                    || shape.y+dy <= 0) {
+                                    break;
+                                }
+                                shape.x += dx;
+                                shape.y += dy;
                                 invalidate();
 
                                 break;
@@ -279,119 +296,116 @@ public class MaskView extends View {
     //分割圆形区域
     public void spiltRound() {
         Shape shape = null;
-        for (int i = 0; i < rShape.size(); i++) {
-            if (rShape.get(i).select) {
-                shape = rShape.get(i);
-                break;
-            }
-        }
-        if (shape != null && shape instanceof Round) {
-            Round round = (Round) shape;
-            //clear
-            round.clearArea();
-            int y = (int) (round.y * 1.0f / scale);
-            int x = (int) (round.x * 1.0f / scale);
-            int r = (int) (round.r * 1.0f / scale);
+        for (int index = 0; index < rShape.size(); index++) {
+            shape = rShape.get(index);
 
-            //第一象限
-            for (int i = y - 1; i > (y - r); i--) {
-                for (int j = x; j < (x + r); j++) {
-                    int distance2 = (j - x) * (j - x) + (i - y) * (i - y);
+            if (shape != null && shape instanceof Round) {
+                Round round = (Round) shape;
+                //clear
+                round.clearArea();
+                int y = (int) (round.y * 1.0f / scale);
+                int x = (int) (round.x * 1.0f / scale);
+                int r = (int) (round.r * 1.0f / scale);
 
-                    if (distance2 < r * r * R1 * R1) {
-                        //diyikuai
-                        round.addArea1(new Point(j, i));
-                    } else if (distance2 < r * r * R2 * R2) {
+                //第一象限
+                for (int i = y - 1; i > (y - r); i--) {
+                    for (int j = x; j < (x + r); j++) {
+                        int distance2 = (j - x) * (j - x) + (i - y) * (i - y);
 
-                        round.addArea2(new Point(j, i));
-                    } else if (distance2 < r * r) {
-                        //jisuanjiaodu
-                        double dianji = Math.abs(j - x);
-                        double mod = Math.sqrt(distance2);
-                        double arc = Math.acos(dianji / mod) * 180 / Math.PI;
-                        if (arc > 0 && arc <= 22.5)
-                            round.addArea6(new Point(j, i));
-                        else if (arc > 22.5 && arc <= 67.5)
-                            round.addArea7(new Point(j, i));
-                        else
-                            round.addArea8(new Point(j, i));
-                    } else
-                        break;
+                        if (distance2 < r * r * R1 * R1) {
+                            //diyikuai
+                            round.addArea1(new Point(j, i));
+                        } else if (distance2 < r * r * R2 * R2) {
+
+                            round.addArea2(new Point(j, i));
+                        } else if (distance2 < r * r) {
+                            //jisuanjiaodu
+                            double dianji = Math.abs(j - x);
+                            double mod = Math.sqrt(distance2);
+                            double arc = Math.acos(dianji / mod) * 180 / Math.PI;
+                            if (arc > 0 && arc <= 22.5)
+                                round.addArea6(new Point(j, i));
+                            else if (arc > 22.5 && arc <= 67.5)
+                                round.addArea7(new Point(j, i));
+                            else
+                                round.addArea8(new Point(j, i));
+                        } else
+                            break;
+                    }
                 }
-            }
-            //dierxiangxian
-            for (int i = y; i > (y - r); i--) {
-                for (int j = x - 1; j > (x - r); j--) {
-                    int distance2 = (j - x) * (j - x) + (i - y) * (i - y);
-                    if (distance2 < r * r * R1 * R1) {
-                        //diyikuai
-                        round.addArea1(new Point(j, i));
-                    } else if (distance2 < r * r * R2 * R2) {
+                //dierxiangxian
+                for (int i = y; i > (y - r); i--) {
+                    for (int j = x - 1; j > (x - r); j--) {
+                        int distance2 = (j - x) * (j - x) + (i - y) * (i - y);
+                        if (distance2 < r * r * R1 * R1) {
+                            //diyikuai
+                            round.addArea1(new Point(j, i));
+                        } else if (distance2 < r * r * R2 * R2) {
 
-                        round.addArea3(new Point(j, i));
-                    } else if (distance2 < r * r) {
-                        double dianji = Math.abs(x - j);
-                        double mod = Math.sqrt(distance2);
-                        double arc = Math.acos(dianji / mod) * 180 / Math.PI;
-                        if (arc >= 0 && arc < 22.5)
-                            round.addArea10(new Point(j, i));
-                        else if (arc >= 22.5 && arc < 67.5)
-                            round.addArea9(new Point(j, i));
-                        else
-                            round.addArea8(new Point(j, i));
-                    } else
-                        break;
+                            round.addArea3(new Point(j, i));
+                        } else if (distance2 < r * r) {
+                            double dianji = Math.abs(x - j);
+                            double mod = Math.sqrt(distance2);
+                            double arc = Math.acos(dianji / mod) * 180 / Math.PI;
+                            if (arc >= 0 && arc < 22.5)
+                                round.addArea10(new Point(j, i));
+                            else if (arc >= 22.5 && arc < 67.5)
+                                round.addArea9(new Point(j, i));
+                            else
+                                round.addArea8(new Point(j, i));
+                        } else
+                            break;
+                    }
                 }
-            }
-            //disanxiangxian
-            for (int i = y + 1; i < (y + r); i++) {
-                for (int j = x; j > (x - r); j--) {
-                    int distance2 = (j - x) * (j - x) + (i - y) * (i - y);
-                    if (distance2 < r * r * R1 * R1) {
-                        //diyikuai
-                        round.addArea1(new Point(j, i));
-                    } else if (distance2 < r * r * R2 * R2) {
-                        round.addArea4(new Point(j, i));
-                    } else if (distance2 < r * r) {
-                        double dianji = Math.abs(x - j);
-                        double mod = Math.sqrt(distance2);
-                        double arc = Math.acos(dianji / mod) * 180 / Math.PI;
-                        if (arc > 0 && arc <= 22.5)
-                            round.addArea10(new Point(j, i));
-                        else if (arc > 22.5 && arc <= 67.5)
-                            round.addArea11(new Point(j, i));
-                        else
-                            round.addArea12(new Point(j, i));
-                    } else
-                        break;
+                //disanxiangxian
+                for (int i = y + 1; i < (y + r); i++) {
+                    for (int j = x; j > (x - r); j--) {
+                        int distance2 = (j - x) * (j - x) + (i - y) * (i - y);
+                        if (distance2 < r * r * R1 * R1) {
+                            //diyikuai
+                            round.addArea1(new Point(j, i));
+                        } else if (distance2 < r * r * R2 * R2) {
+                            round.addArea4(new Point(j, i));
+                        } else if (distance2 < r * r) {
+                            double dianji = Math.abs(x - j);
+                            double mod = Math.sqrt(distance2);
+                            double arc = Math.acos(dianji / mod) * 180 / Math.PI;
+                            if (arc > 0 && arc <= 22.5)
+                                round.addArea10(new Point(j, i));
+                            else if (arc > 22.5 && arc <= 67.5)
+                                round.addArea11(new Point(j, i));
+                            else
+                                round.addArea12(new Point(j, i));
+                        } else
+                            break;
+                    }
                 }
-            }
-            //disixiangxian
-            for (int i = y; i < y + r; i++) {
-                for (int j = x + 1; j < x + r; j++) {
-                    int distance2 = (j - x) * (j - x) + (i - y) * (i - y);
-                    if (distance2 < r * r * R1 * R1) {
-                        //diyikuai
-                        round.addArea1(new Point(j, i));
-                    } else if (distance2 < r * r * R2 * R2) {
+                //disixiangxian
+                for (int i = y; i < y + r; i++) {
+                    for (int j = x + 1; j < x + r; j++) {
+                        int distance2 = (j - x) * (j - x) + (i - y) * (i - y);
+                        if (distance2 < r * r * R1 * R1) {
+                            //diyikuai
+                            round.addArea1(new Point(j, i));
+                        } else if (distance2 < r * r * R2 * R2) {
 
-                        round.addArea5(new Point(j, i));
-                    } else if (distance2 < r * r) {
-                        double dianji = Math.abs(j - x);
-                        double mod = Math.sqrt(distance2);
-                        double arc = Math.acos(dianji / mod) * 180 / Math.PI;
-                        if (arc >= 0 && arc < 22.5)
-                            round.addArea6(new Point(j, i));
-                        else if (arc >= 22.5 && arc < 67.5)
-                            round.addArea13(new Point(j, i));
-                        else
-                            round.addArea12(new Point(j, i));
-                    } else
-                        break;
+                            round.addArea5(new Point(j, i));
+                        } else if (distance2 < r * r) {
+                            double dianji = Math.abs(j - x);
+                            double mod = Math.sqrt(distance2);
+                            double arc = Math.acos(dianji / mod) * 180 / Math.PI;
+                            if (arc >= 0 && arc < 22.5)
+                                round.addArea6(new Point(j, i));
+                            else if (arc >= 22.5 && arc < 67.5)
+                                round.addArea13(new Point(j, i));
+                            else
+                                round.addArea12(new Point(j, i));
+                        } else
+                            break;
+                    }
                 }
-            }
 
-            round.setColor(bitmap);
+                round.setColor(bitmap);
 //        Log.e("Area1", "size=" +Area1.size());
 //        Log.e("Area2", "size=" +Area2.size());
 //        Log.e("Area3", "size=" +Area3.size());
@@ -405,7 +419,10 @@ public class MaskView extends View {
 //        Log.e("Area11", "size=" +Area11.size());
 //        Log.e("Area12", "size=" +Area12.size());
 //        Log.e("Area13", "size=" +Area13.size());
-            invalidate();
+
+//                round.caculate();
+            }
         }
+        invalidate();
     }
 }

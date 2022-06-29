@@ -3,25 +3,27 @@ package com.example.myapplication.bean;
 import android.graphics.Bitmap;
 import android.util.Log;
 
+import com.utils.ColorUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Round extends Shape{
     public int r;
     //分区像素点
-    private List<Point> Area1 = new ArrayList<>();
-    private List<Point> Area2 = new ArrayList<>();
-    private List<Point> Area3 = new ArrayList<>();
-    private List<Point> Area4 = new ArrayList<>();
-    private List<Point> Area5 = new ArrayList<>();
-    private List<Point> Area6 = new ArrayList<>();
-    private List<Point> Area7 = new ArrayList<>();
-    private List<Point> Area8 = new ArrayList<>();
-    private List<Point> Area9 = new ArrayList<>();
-    private List<Point> Area10 = new ArrayList<>();
-    private List<Point> Area11 = new ArrayList<>();
-    private List<Point> Area12 = new ArrayList<>();
-    private List<Point> Area13 = new ArrayList<>();
+    public List<Point> Area1 = new ArrayList<>();
+    public List<Point> Area2 = new ArrayList<>();
+    public List<Point> Area3 = new ArrayList<>();
+    public List<Point> Area4 = new ArrayList<>();
+    public List<Point> Area5 = new ArrayList<>();
+    public List<Point> Area6 = new ArrayList<>();
+    public List<Point> Area7 = new ArrayList<>();
+    public List<Point> Area8 = new ArrayList<>();
+    public List<Point> Area9 = new ArrayList<>();
+    public List<Point> Area10 = new ArrayList<>();
+    public List<Point> Area11 = new ArrayList<>();
+    public List<Point> Area12 = new ArrayList<>();
+    public List<Point> Area13 = new ArrayList<>();
 
     public Round(int x, int y) {
         super(x, y);
@@ -88,7 +90,7 @@ public class Round extends Shape{
             throw new IllegalArgumentException("bitmap is null");
         for (int i = 0; i < Area9.size(); i++) {
             int pixel = bitmap.getPixel(Area9.get(i).x, Area9.get(i).y);
-            Log.e("Area9", "x=" + Area9.get(i).x + ",y=" + Area9.get(i).y);
+//            Log.e("Area9", "x=" + Area9.get(i).x + ",y=" + Area9.get(i).y);
             Area9.get(i).color = pixel;
 
         }
@@ -140,5 +142,21 @@ public class Round extends Shape{
             int pixel = bitmap.getPixel(Area13.get(i).x, Area13.get(i).y);
             Area13.get(i).color = pixel;
         }
+    }
+
+    public void caculate() {
+        ColorUtils.caculate(Area1, "a1");
+        ColorUtils.caculate(Area2, "a2");
+        ColorUtils.caculate(Area3, "a3");
+        ColorUtils.caculate(Area4, "a4");
+        ColorUtils.caculate(Area5, "a5");
+        ColorUtils.caculate(Area6, "a6");
+        ColorUtils.caculate(Area7, "a7");
+        ColorUtils.caculate(Area8, "a8");
+        ColorUtils.caculate(Area9, "a9");
+        ColorUtils.caculate(Area10, "a10");
+        ColorUtils.caculate(Area11, "a11");
+        ColorUtils.caculate(Area12, "a12");
+        ColorUtils.caculate(Area13, "a13");
     }
 }

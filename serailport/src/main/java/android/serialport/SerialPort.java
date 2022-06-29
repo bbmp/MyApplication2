@@ -214,9 +214,9 @@ public final class SerialPort {
         }
     }
 
-    static {
-        System.loadLibrary("serial_port");
-    }
+//    static {
+//        System.loadLibrary("serial_port");
+//    }
 
     public static Builder newBuilder(File device, int baudrate) {
         return new Builder(device, baudrate);
