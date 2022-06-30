@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?><!-- 有标题，有文本内容，两个按钮   -->
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.6" />
+
+    <View
+        android:id="@+id/view_bg"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/guideline3"
+        app:layout_constraintBottom_toBottomOf="@id/common_dialog_ok_btn"
+        app:layout_constraintTop_toTopOf="@id/common_dialog_title_text"
+        android:background="@color/white"/>
+
+    <TextView
+        android:id="@+id/common_dialog_title_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="结果"
+        android:textSize="18sp"
+        android:layout_marginBottom="30dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="@id/guideline3"
+        app:layout_constraintBottom_toTopOf="@id/tv_total"/>
+    <TextView
+        android:id="@+id/tv_total"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="总块数"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="@id/guideline3"
+        app:layout_constraintBottom_toTopOf="@id/tv_num"/>
+    <TextView
+        android:id="@+id/tv_num"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="已完成"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="@id/guideline3"
+        app:layout_constraintBottom_toTopOf="@id/tv_min"/>
+    <TextView
+        android:id="@+id/tv_min"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="最小值"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="@id/guideline3"
+        app:layout_constraintBottom_toTopOf="@id/tv_max"/>
+    <TextView
+        android:id="@+id/tv_max"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="最大值"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="@id/guideline3"
+        app:layout_constraintBottom_toTopOf="@id/tv_avg"/>
+    <TextView
+        android:id="@+id/tv_avg"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="平均值"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="@id/guideline3"
+        app:layout_constraintBottom_toTopOf="@id/common_dialog_ok_btn"/>
+    <Button
+        android:id="@+id/common_dialog_ok_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="确定"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="@id/guideline3"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

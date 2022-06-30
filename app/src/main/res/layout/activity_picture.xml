@@ -12,18 +12,147 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <View
+        android:id="@+id/status_bar_fix"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/transparent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <Button
         android:id="@+id/add_round"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="ROUND"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@id/status_bar_fix" />
+    <Button
+        android:id="@+id/add_square"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="SQUARE"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/add_round"/>
+
     <Button
         android:id="@+id/caculate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="caculate"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/add_round"/>
+        app:layout_constraintTop_toBottomOf="@id/add_square" />
+
+    <Button
+        android:id="@+id/tv_rdec"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="R缩小"
+        app:layout_constraintBaseline_toBaselineOf="@id/tv_radd"
+        app:layout_constraintRight_toLeftOf="@id/tv_radd" />
+
+    <Button
+        android:id="@+id/tv_radd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="R放大"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/caculate" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.6" />
+
+    <View
+        android:id="@+id/status_bar_fix2"
+        android:layout_width="10dp"
+        android:layout_height="match_parent"
+        android:background="@color/transparent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <View
+        android:id="@+id/view_bg"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/white"
+        app:layout_constraintBottom_toBottomOf="@id/common_dialog_ok_btn"
+        app:layout_constraintLeft_toRightOf="@id/status_bar_fix2"
+        app:layout_constraintRight_toLeftOf="@id/guideline3"
+        app:layout_constraintTop_toTopOf="@id/common_dialog_title_text" />
+
+    <TextView
+        android:id="@+id/common_dialog_title_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
+        android:text="结果"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@id/tv_total"
+        app:layout_constraintLeft_toRightOf="@id/status_bar_fix2"
+        app:layout_constraintRight_toRightOf="@id/guideline3" />
+
+    <TextView
+        android:id="@+id/tv_total"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="总块数"
+        app:layout_constraintBottom_toTopOf="@id/tv_num"
+        app:layout_constraintLeft_toRightOf="@id/status_bar_fix2"
+        app:layout_constraintRight_toRightOf="@id/guideline3" />
+
+    <TextView
+        android:id="@+id/tv_num"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="已完成"
+        app:layout_constraintBottom_toTopOf="@id/tv_min"
+        app:layout_constraintLeft_toRightOf="@id/status_bar_fix2"
+        app:layout_constraintRight_toRightOf="@id/guideline3" />
+
+    <TextView
+        android:id="@+id/tv_min"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="最小值"
+        app:layout_constraintBottom_toTopOf="@id/tv_max"
+        app:layout_constraintLeft_toRightOf="@id/status_bar_fix2"
+        app:layout_constraintRight_toRightOf="@id/guideline3" />
+
+    <TextView
+        android:id="@+id/tv_max"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="最大值"
+        app:layout_constraintBottom_toTopOf="@id/tv_avg"
+        app:layout_constraintLeft_toRightOf="@id/status_bar_fix2"
+        app:layout_constraintRight_toRightOf="@id/guideline3" />
+
+    <TextView
+        android:id="@+id/tv_avg"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="平均值"
+        app:layout_constraintBottom_toTopOf="@id/common_dialog_ok_btn"
+        app:layout_constraintLeft_toRightOf="@id/status_bar_fix2"
+        app:layout_constraintRight_toRightOf="@id/guideline3" />
+
+    <Button
+        android:id="@+id/common_dialog_ok_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:text="确定"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/status_bar_fix2"
+        app:layout_constraintRight_toRightOf="@id/guideline3" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/group"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="tv_num,tv_total,guideline3,tv_max,tv_min,common_dialog_ok_btn,view_bg,tv_avg,common_dialog_title_text,status_bar_fix2" />
 </androidx.constraintlayout.widget.ConstraintLayout>

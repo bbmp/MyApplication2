@@ -3,6 +3,7 @@ package com.utils;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.util.Log;
 
 import com.example.myapplication.R;
 import com.example.myapplication.bean.Point;
@@ -88,12 +89,13 @@ public class ColorUtils {
     //同步对象
     private static Object object = new Object();
 
-    public static void caculate(List<Point> points, String area) {
+    public static void caculate(List<Point> points, String area, CaculateCallback callback) {
         if (null != points) {
             new Thread() {
                 @Override
                 public void run() {
                     int totalPixels = 0;
+                    int bgPixels = 0; //背景像素
                     double totalScore = 0;
 
                     for (int i = 0; i < points.size(); i++) {
@@ -179,7 +181,8 @@ public class ColorUtils {
                         result = ColorUtils.getColorBG(red, green, blue);
                         if (result < min) {
                             min = result;
-                            return;
+                            score = 0;
+                            bgPixels++;
                         }
                         totalScore = totalScore + score;
                         totalPixels++;
@@ -191,7 +194,9 @@ public class ColorUtils {
                     //计算平均分
 //                    LogUtils.e("totalScore=" + totalScore);
 //                    LogUtils.e("totalPixels=" + totalPixels);
-                    LogUtils.e(area + "score=" + totalScore/totalPixels);
+                    LogUtils.e(area + "  score= " + totalScore/totalPixels + "   bg percent= " + bgPixels*1.0f/totalPixels);
+                    if (null != callback)
+                        callback.onSuccess(totalScore/totalPixels, bgPixels*1.0f/totalPixels);
 
                 }
             }.start();
@@ -326,7 +331,7 @@ public class ColorUtils {
                 LogUtils.e("totalPixels=" + totalPixels[0]);
                 LogUtils.e("score=" + totalScore[0]/totalPixels[0]);
                 if (null != callback)
-                    callback.onSuccess(totalScore[0]/totalPixels[0]);
+                    callback.onSuccess(totalScore[0]/totalPixels[0], 0.0);
             }
         }.start();
     }
@@ -434,7 +439,7 @@ public class ColorUtils {
     }
 
     public interface CaculateCallback {
-        void onSuccess(double score);
+        void onSuccess(double score, double bgpercent);
         void onFailed();
     }
 }

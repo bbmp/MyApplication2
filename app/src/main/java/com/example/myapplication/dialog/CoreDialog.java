@@ -119,7 +119,7 @@ public class CoreDialog extends Dialog {
      */
     private void autoAdjustHeight() {
         // 高度不超过屏幕高度的80%
-        int maxHeight = (int) (ScreenUtils.getHeightPixels(mContext) * 0.5);
+        int maxHeight = (int) (ScreenUtils.getHeightPixels(mContext) * 0.8);
         int height = mView.getHeight();
 
         if (height > maxHeight) {

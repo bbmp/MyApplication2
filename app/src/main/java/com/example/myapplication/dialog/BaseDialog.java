@@ -84,6 +84,10 @@ public abstract class BaseDialog implements IRokiDialog {
 
     }
 
+    public View getRootView() {
+        return rootView;
+    }
+
     @Override
     public void setListeners(DialogOnClickListener onClickListener, int... viewIds) {
         if (null != rootView) {

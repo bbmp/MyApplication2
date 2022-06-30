@@ -28,4 +28,19 @@
     <color name="color_4">#FDE7B0</color>
     <color name="black5">#0DFFFFFF</color>
     <color name="transparent">#00000000</color>
+    <color name="xiangyahei">#666666</color>
+    <color name="lenghui">#808a87</color>
+    <color name="shibanhui">#e6e6e6</color>
+    <color name="red">#ff0000</color>
+    <color name="fanqiehong">#ff6347</color>
+    <color name="pink">#ffc0cb</color>
+    <color name="yinduhong">#b0171f</color>
+    <color name="green">#00ff00</color>
+    <color name="qingse">#00ffff</color>
+    <color name="shenlinlv">#228b22</color>
+    <color name="blue">#0000ff</color>
+    <color name="shenlan">#191970</color>
+    <color name="yellow">#ffff00</color>
+    <color name="shenhong">#ff00ff</color>
+    <color name="ziluolan">#8a2be2</color>
 </resources>

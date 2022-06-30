@@ -144,19 +144,19 @@ public class Round extends Shape{
         }
     }
 
-    public void caculate() {
-        ColorUtils.caculate(Area1, "a1");
-        ColorUtils.caculate(Area2, "a2");
-        ColorUtils.caculate(Area3, "a3");
-        ColorUtils.caculate(Area4, "a4");
-        ColorUtils.caculate(Area5, "a5");
-        ColorUtils.caculate(Area6, "a6");
-        ColorUtils.caculate(Area7, "a7");
-        ColorUtils.caculate(Area8, "a8");
-        ColorUtils.caculate(Area9, "a9");
-        ColorUtils.caculate(Area10, "a10");
-        ColorUtils.caculate(Area11, "a11");
-        ColorUtils.caculate(Area12, "a12");
-        ColorUtils.caculate(Area13, "a13");
+    public void caculate(ColorUtils.CaculateCallback callback) {
+        ColorUtils.caculate(Area1, "a1", callback);
+        ColorUtils.caculate(Area2, "a2", callback);
+        ColorUtils.caculate(Area3, "a3", callback);
+        ColorUtils.caculate(Area4, "a4",callback);
+        ColorUtils.caculate(Area5, "a5", callback);
+        ColorUtils.caculate(Area6, "a6", callback);
+        ColorUtils.caculate(Area7, "a7", callback);
+        ColorUtils.caculate(Area8, "a8", callback);
+        ColorUtils.caculate(Area9, "a9", callback);
+        ColorUtils.caculate(Area10, "a10", callback);
+        ColorUtils.caculate(Area11, "a11", callback);
+        ColorUtils.caculate(Area12, "a12", callback);
+        ColorUtils.caculate(Area13, "a13", callback);
     }
 }

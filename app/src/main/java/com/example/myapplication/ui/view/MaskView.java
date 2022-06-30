@@ -75,6 +75,49 @@ public class MaskView extends View {
         this.bitmap = bitmap;
         invalidate();
     }
+    //圆放大
+    public void addR() {
+        if (null != bitmap) {
+            for (int i = 0; i<rShape.size(); i++) {
+                Shape shape = rShape.get(i);
+                if (shape.select && shape instanceof Round) {
+                    Round round = (Round) shape;
+                    if (round.r*2 >= bitmap.getHeight()) //半径超图片高度一半
+                        return;
+                    round.r++;
+                    invalidate();
+                    break;
+                }
+            }
+        }
+    }
+    //圆缩小
+    public void decR() {
+        if (null != bitmap) {
+            for (int i = 0; i<rShape.size(); i++) {
+                Shape shape = rShape.get(i);
+                if (shape.select && shape instanceof Round) {
+                    Round round = (Round) shape;
+                    if (round.r <= 20)  //不小于20像素
+                        return;
+                    round.r--;
+                    invalidate();
+                    break;
+                }
+            }
+        }
+    }
+
+    //获取圆个数
+    public int getRoundNum() {
+        int num = 0;
+        for (int i=0; i<rShape.size(); i++) {
+            Shape shape = rShape.get(i);
+            if (shape instanceof Round)
+                num++;
+        }
+        return num * 13;
+    }
     //add a round
     public void addRound() {
         if (null != bitmap) {
@@ -134,63 +177,64 @@ public class MaskView extends View {
             }
         }
 
-        for (int j = 0; j < rShape.size(); j++) {
-            Round round = (Round) rShape.get(j);
-            int height = getHeight();
-            Paint paint = new Paint();
-            for (int i = 0; i < round.Area9.size(); i++) {
-                paint.setColor(Color.RED);
-                canvas.drawPoint(round.Area9.get(i).x, round.Area9.get(i).y, paint);
-            }
-            for (int i = 0; i < round.Area1.size(); i++) {
-                paint.setColor(round.Area1.get(i).color);
-                canvas.drawPoint(round.Area1.get(i).x+240, round.Area1.get(i).y, paint);
-            }
-            for (int i = 0; i < round.Area2.size(); i++) {
-                paint.setColor(round.Area2.get(i).color);
-                canvas.drawPoint(round.Area2.get(i).x+240, round.Area2.get(i).y, paint);
-            }
-            for (int i = 0; i < round.Area3.size(); i++) {
-                paint.setColor(round.Area3.get(i).color);
-                canvas.drawPoint(round.Area3.get(i).x+240, round.Area3.get(i).y, paint);
-            }
-            for (int i = 0; i < round.Area4.size(); i++) {
-                paint.setColor(round.Area4.get(i).color);
-                canvas.drawPoint(round.Area4.get(i).x+240, round.Area4.get(i).y, paint);
-            }
-            for (int i = 0; i < round.Area5.size(); i++) {
-                paint.setColor(round.Area5.get(i).color);
-                canvas.drawPoint(round.Area5.get(i).x+240, round.Area5.get(i).y, paint);
-            }
-//            for (int i = 0; i < Area6.size(); i++) {
-//                paint.setColor(Area6.get(i).color);
-//                canvas.drawPoint(Area6.get(i).x, Area6.get(i).y, paint);
+//        for (int j = 0; j < rShape.size(); j++) {
+//            Round round = (Round) rShape.get(j);
+//            int height = getHeight();
+//            Paint paint = new Paint();
+//
+//            for (int i = 0; i < round.Area1.size(); i++) {
+//                paint.setColor(context.getColor(R.color.black));
+//                canvas.drawPoint(round.Area1.get(i).x, round.Area1.get(i).y, paint);
 //            }
-//            for (int i = 0; i < Area7.size(); i++) {
-//                paint.setColor(Area7.get(i).color);
-//                canvas.drawPoint(Area7.get(i).x, Area7.get(i).y, paint);
+//            for (int i = 0; i < round.Area2.size(); i++) {
+//                paint.setColor(context.getColor(R.color.white));
+//                canvas.drawPoint(round.Area2.get(i).x, round.Area2.get(i).y, paint);
 //            }
-//            for (int i = 0; i < Area8.size(); i++) {
-//                paint.setColor(Area8.get(i).color);
-//                canvas.drawPoint(Area8.get(i).x, Area8.get(i).y, paint);
+//            for (int i = 0; i < round.Area3.size(); i++) {
+//                paint.setColor(context.getColor(R.color.fanqiehong));
+//                canvas.drawPoint(round.Area3.get(i).x, round.Area3.get(i).y, paint);
 //            }
-//            for (int i = 0; i < Area10.size(); i++) {
-//                paint.setColor(Area10.get(i).color);
-//                canvas.drawPoint(Area10.get(i).x, Area10.get(i).y, paint);
+//            for (int i = 0; i < round.Area4.size(); i++) {
+//                paint.setColor(context.getColor(R.color.green));
+//                canvas.drawPoint(round.Area4.get(i).x, round.Area4.get(i).y, paint);
 //            }
-//            for (int i = 0; i < Area11.size(); i++) {
-//                paint.setColor(Area11.get(i).color);
-//                canvas.drawPoint(Area11.get(i).x, Area11.get(i).y, paint);
+//            for (int i = 0; i < round.Area5.size(); i++) {
+//                paint.setColor(context.getColor(R.color.lenghui));
+//                canvas.drawPoint(round.Area5.get(i).x, round.Area5.get(i).y, paint);
 //            }
-//            for (int i = 0; i < Area12.size(); i++) {
-//                paint.setColor(Area12.get(i).color);
-//                canvas.drawPoint(Area12.get(i).x, Area12.get(i).y, paint);
+//            for (int i = 0; i < round.Area6.size(); i++) {
+//                paint.setColor(context.getColor(R.color.pink));
+//                canvas.drawPoint(round.Area6.get(i).x, round.Area6.get(i).y, paint);
 //            }
-//            for (int i = 0; i < Area13.size(); i++) {
-//                paint.setColor(Area13.get(i).color);
-//                canvas.drawPoint(Area13.get(i).x, Area13.get(i).y, paint);
+//            for (int i = 0; i < round.Area7.size(); i++) {
+//                paint.setColor(context.getColor(R.color.qingse));
+//                canvas.drawPoint(round.Area7.get(i).x, round.Area7.get(i).y, paint);
 //            }
-        }
+//            for (int i = 0; i < round.Area8.size(); i++) {
+//                paint.setColor(context.getColor(R.color.red));
+//                canvas.drawPoint(round.Area8.get(i).x, round.Area8.get(i).y, paint);
+//            }
+//            for (int i = 0; i < round.Area9.size(); i++) {
+//                paint.setColor(context.getColor(R.color.shenhong));
+//                canvas.drawPoint(round.Area9.get(i).x, round.Area9.get(i).y, paint);
+//            }
+//            for (int i = 0; i < round.Area10.size(); i++) {
+//                paint.setColor(context.getColor(R.color.shenlan));
+//                canvas.drawPoint(round.Area10.get(i).x, round.Area10.get(i).y, paint);
+//            }
+//            for (int i = 0; i < round.Area11.size(); i++) {
+//                paint.setColor(context.getColor(R.color.shenlinlv));
+//                canvas.drawPoint(round.Area11.get(i).x, round.Area11.get(i).y, paint);
+//            }
+//            for (int i = 0; i < round.Area12.size(); i++) {
+//                paint.setColor(context.getColor(R.color.shibanhui));
+//                canvas.drawPoint(round.Area12.get(i).x, round.Area12.get(i).y, paint);
+//            }
+//            for (int i = 0; i < round.Area13.size(); i++) {
+//                paint.setColor(context.getColor(R.color.yellow));
+//                canvas.drawPoint(round.Area13.get(i).x, round.Area13.get(i).y, paint);
+//            }
+//        }
     }
 
     @Override
@@ -278,23 +322,74 @@ public class MaskView extends View {
     }
 
     //分割方形区域
-    public void splitSquare() {
+    public void splitSquare(ColorUtils.CaculateCallback callback) {
         Shape shape = null;
-        for (int i = 0; i < rShape.size(); i++) {
-            if (rShape.get(i).select) {
-                shape = rShape.get(i);
-                break;
+        for (int index = 0; index < rShape.size(); index++) {
+            shape = rShape.get(index);
+
+            if (null != shape && shape instanceof Square) {
+                Square square = (Square) shape;
+                //clear
+                square.clearArea();
+                int y = (int) (square.y * 1.0f / scale);
+                int x = (int) (square.x * 1.0f / scale);
+                int width = (int) (square.width * 1.0f / scale);
+                int height = (int) (square.height * 1.0f / scale);
+                //第一行
+                for (int i=y; i<(y+height/3); i++) {
+                    for (int j=x; j<=(x+width); j++) {
+                        if (j < (width/5))
+                            square.addArea8(new Point(j, i));
+                        else if (j < (width*2/5))
+                            square.addArea9(new Point(j, i));
+                        else if (j <= (width*3/5))
+                            square.addArea2(new Point(j, i));
+                        else if (j <= (width*4/5))
+                            square.addArea10(new Point(j, i));
+                        else
+                            square.addArea11(new Point(j, i));
+                    }
+                }
+                //第二行
+                for (int i=(y+height/3); i<=(y+height*2/3); i++) {
+                    for (int j=x; j<=(x+width); j++) {
+                        if (j < (width/5))
+                            square.addArea4(new Point(j, i));
+                        else if (j < (width*2/5))
+                            square.addArea3(new Point(j, i));
+                        else if (j <= (width*3/5))
+                            square.addArea1(new Point(j, i));
+                        else if (j <= (width*4/5))
+                            square.addArea6(new Point(j, i));
+                        else
+                            square.addArea7(new Point(j, i));
+                    }
+                }
+                //第三行
+                for (int i=(y+height*2/3+1); i<=(y+height); i++) {
+                    for (int j=x; j<=(x+width); j++) {
+                        if (j < (width/5))
+                            square.addArea12(new Point(j, i));
+                        else if (j < (width*2/5))
+                            square.addArea13(new Point(j, i));
+                        else if (j <= (width*3/5))
+                            square.addArea5(new Point(j, i));
+                        else if (j <= (width*4/5))
+                            square.addArea14(new Point(j, i));
+                        else
+                            square.addArea15(new Point(j, i));
+                    }
+                }
+
+                square.setColor(bitmap);
+
+                square.caculate(callback);
             }
         }
-        if (shape != null && shape instanceof Square) {
-            Square square = (Square) shape;
-            square.clear();
-        }
-
     }
 
     //分割圆形区域
-    public void spiltRound() {
+    public void spiltRound(ColorUtils.CaculateCallback callback) {
         Shape shape = null;
         for (int index = 0; index < rShape.size(); index++) {
             shape = rShape.get(index);
@@ -420,9 +515,9 @@ public class MaskView extends View {
 //        Log.e("Area12", "size=" +Area12.size());
 //        Log.e("Area13", "size=" +Area13.size());
 
-//                round.caculate();
+                round.caculate(callback);
             }
         }
-        invalidate();
+//        invalidate();
     }
 }
