@@ -333,9 +333,11 @@ public class MaskView extends View {
                         float x = ev_x - round.x;
                         float y = ev_y - round.y;
                         if (Math.sqrt(x * x + y * y) < round.r) {
+                            //都设置成非选中
                             for (int j = 0; j< rShape.size(); j++)
                                 rShape.get(j).select = false;
 
+                            //选中当前
                             round.select = true;
                             for (int j=0; j<rShape.size(); j++)
                                 LogUtils.e("select +" + rShape.get(j).select);
@@ -349,9 +351,11 @@ public class MaskView extends View {
                         Square square = (Square) rShape.get(i);
                         if (ev_x > square.x && ev_x < square.x + square.width
                         && ev_y > square.y && ev_y < square.y + square.height) {
+                            //先都设置非选中
                             for (int j = 0; j< rShape.size(); j++)
                                 rShape.get(j).select = false;
 
+                            //选中当前
                             square.select = true;
                             invalidate();
                             move = true;
@@ -370,6 +374,7 @@ public class MaskView extends View {
                 if (move) {
                     Shape shape = null;
                     for (int i = 0; i < rShape.size(); i++) {
+                        //得到选中的图形
                         if (rShape.get(i).select) {
                             shape = rShape.get(i);
                             break;
@@ -383,10 +388,24 @@ public class MaskView extends View {
                                 float dy = ev_y - ClickY;
                                 ClickX = ev_x;
                                 ClickY = ev_y;
-                                if (shape.x+dx>=bitmap.getWidth() || shape.x+dx <= 0
-                                    || shape.y+dy>=bitmap.getHeight()
-                                    || shape.y+dy <= 0) {
-                                    break;
+                                //圆形边界值
+                                if (shape instanceof Round) {
+                                    Round round = (Round) shape;
+                                    if (round.x + dx + round.r >= bitmap.getWidth()
+                                        || round.x + dx - round.r <= 0
+                                        || round.y + dy + round.r >= bitmap.getHeight()
+                                        || round.y + dy - round.r <= 0)
+                                        break;
+                                }
+                                //矩形边界值
+                                if (shape instanceof Square) {
+                                    Square square = (Square) shape;
+                                    if (square.x + dx + square.width >= bitmap.getWidth()
+                                            || square.x + dx <= 0
+                                            || square.y + dy + square.height >= bitmap.getHeight()
+                                            || square.y + dy <= 0) {
+                                        break;
+                                    }
                                 }
                                 shape.x += dx;
                                 shape.y += dy;

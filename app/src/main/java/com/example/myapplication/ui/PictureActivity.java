@@ -3,6 +3,7 @@ package com.example.myapplication.ui;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.Group;
+import androidx.constraintlayout.widget.Guideline;
 
 import android.content.ContentProvider;
 import android.content.ContentResolver;
@@ -55,9 +56,14 @@ public class PictureActivity extends AppCompatActivity {
     private Group group, group2, group3;
     private TextView tvTotal;
     private static TextView tvNum;
-    private static TextView tvMin, tvMax, tvAvg;
+    private static TextView tvMin, tvMax, tvAvg, tvBg;
     private Button btOK;
     private static double max, min, total;
+    //所有像素和背景像素
+    private static int totalPixels, bgPixels;
+    private static boolean isComplete = true;
+    //结果显示辅助线
+    private Guideline guideline3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +88,7 @@ public class PictureActivity extends AppCompatActivity {
         btWdec = findViewById(R.id.tv_widthdec);
         btHadd = findViewById(R.id.tv_heightadd);
         btHdec = findViewById(R.id.tv_heightdec);
+        guideline3 = findViewById(R.id.guideline3);
 
         group = findViewById(R.id.group);
         group2 = findViewById(R.id.group2);
@@ -91,6 +98,7 @@ public class PictureActivity extends AppCompatActivity {
         tvMin = findViewById(R.id.tv_min);
         tvMax = findViewById(R.id.tv_max);
         tvAvg = findViewById(R.id.tv_avg);
+        tvBg = findViewById(R.id.tv_bg);
         btOK = findViewById(R.id.common_dialog_ok_btn);
         btOK.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,6 +138,8 @@ public class PictureActivity extends AppCompatActivity {
                 bitmap = Bitmap.createBitmap(bitmap, 0, 0, srcWidth, srcHeight, matrix, true);
 
                 maskView.setBitmap(bitmap);
+                guideline3.setGuidelineBegin((int) (scale * srcWidth));
+
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -179,24 +189,34 @@ public class PictureActivity extends AppCompatActivity {
         caculateRound.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!isComplete)
+                    return;
+                isComplete = false;
                 group.setVisibility(View.VISIBLE);
                 total = 0;
                 max = 0;
                 min = Integer.MAX_VALUE;
+                totalPixels = 0;
+                bgPixels = 0;
 
                 tvTotal.setText("总块数   " + maskView.getRoundNum());
                 final int[] num = {0};
                 maskView.spiltRound(new ColorUtils.CaculateCallback() {
                     @Override
-                    public void onSuccess(double score, double bgpercent) {
-                        num[0]++;
-                        Message msg = handler.obtainMessage();
-                        Bundle bundle = new Bundle();
-                        bundle.putInt("num", num[0]);
-                        bundle.putDouble("score", score);
-                        bundle.putDouble("bgpercent", bgpercent);
-                        msg.setData(bundle);
-                        handler.sendMessage(msg);
+                    public void onSuccess(double score, int totalpixels, int bgpixels) {
+                        synchronized (num) {
+                            num[0]++;
+                            Message msg = handler.obtainMessage();
+                            Bundle bundle = new Bundle();
+                            bundle.putInt("num", num[0]);
+                            bundle.putDouble("score", score);
+                            bundle.putInt("totalpixels", totalpixels);
+                            bundle.putInt("bgpixels", bgpixels);
+                            msg.setData(bundle);
+                            handler.sendMessage(msg);
+                            if (num[0] == maskView.getRoundNum())
+                                isComplete = true;
+                        }
                     }
 
                     @Override
@@ -258,25 +278,33 @@ public class PictureActivity extends AppCompatActivity {
         caculateSquare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!isComplete)
+                    return;
+                isComplete = false;
                 group.setVisibility(View.VISIBLE);
                 total = 0;
                 max = 0;
                 min = Integer.MAX_VALUE;
+                totalPixels = 0;
+                bgPixels = 0;
 
                 tvTotal.setText("总块数   " + maskView.getSquareNum());
                 final int[] num = {0};
                 maskView.splitSquare(new ColorUtils.CaculateCallback() {
                     @Override
-                    public void onSuccess(double score, double bgpercent) {
+                    public void onSuccess(double score, int totalpixels, int bgpixels) {
                         synchronized (num) {
                             num[0]++;
                             Message msg = handler.obtainMessage();
                             Bundle bundle = new Bundle();
                             bundle.putInt("num", num[0]);
                             bundle.putDouble("score", score);
-                            bundle.putDouble("bgpercent", bgpercent);
+                            bundle.putInt("totalpixels", totalpixels);
+                            bundle.putInt("bgpixels", bgpixels);
                             msg.setData(bundle);
                             handler.sendMessage(msg);
+                            if (num[0] == maskView.getSquareNum())
+                                isComplete = true;
                         }
                     }
 
@@ -295,9 +323,12 @@ public class PictureActivity extends AppCompatActivity {
             Bundle bundle = msg.getData();
             int num = bundle.getInt("num");
             double score = bundle.getDouble("score");
-            double bgpercent = bundle.getDouble("bgpercent");
+            int totalpixels = bundle.getInt("totalpixels");
+            int bgpixels = bundle.getInt("bgpixels");
             tvNum.setText("已完成   " + num);
             total = total + score;
+            totalPixels = totalPixels + totalpixels;
+            bgPixels = bgPixels + bgpixels;
             if (max < score)
                 max = score;
             if (min > score)
@@ -305,6 +336,7 @@ public class PictureActivity extends AppCompatActivity {
             tvMax.setText("最大值   " + max);
             tvMin.setText("最小值   " + min);
             tvAvg.setText("平均值   " + total/num);
+            tvBg.setText("背景色占比:" + bgPixels*1.0f/totalPixels);
         }
     };
 }

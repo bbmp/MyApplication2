@@ -197,7 +197,7 @@ public class ColorUtils {
 //                    LogUtils.e("totalPixels=" + totalPixels);
                     LogUtils.e(area + "  score= " + totalScore/totalPixels + "   bg percent= " + bgPixels*1.0f/totalPixels);
                     if (null != callback)
-                        callback.onSuccess(totalScore/totalPixels, bgPixels*1.0f/totalPixels);
+                        callback.onSuccess(totalScore/totalPixels, totalPixels, bgPixels);
 
                 }
             }.start();
@@ -332,7 +332,7 @@ public class ColorUtils {
                 LogUtils.e("totalPixels=" + totalPixels[0]);
                 LogUtils.e("score=" + totalScore[0]/totalPixels[0]);
                 if (null != callback)
-                    callback.onSuccess(totalScore[0]/totalPixels[0], 0.0);
+                    callback.onSuccess(totalScore[0]/totalPixels[0], totalPixels[0], 0);
             }
         }.start();
     }
@@ -440,7 +440,8 @@ public class ColorUtils {
     }
 
     public interface CaculateCallback {
-        void onSuccess(double score, double bgpercent);
+        //每小块分值, 所有像素，背景像素
+        void onSuccess(double score, int totalpixels, int bgpixels);
         void onFailed();
     }
 }

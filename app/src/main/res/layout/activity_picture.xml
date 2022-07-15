@@ -104,7 +104,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.6" />
+        app:layout_constraintGuide_begin="0dp"/>
 
 
 
@@ -170,6 +170,14 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="平均值"
+        app:layout_constraintBottom_toTopOf="@id/tv_bg"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="@id/guideline3" />
+    <TextView
+        android:id="@+id/tv_bg"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="背景色占比"
         app:layout_constraintBottom_toTopOf="@id/common_dialog_ok_btn"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="@id/guideline3" />
@@ -189,7 +197,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        app:constraint_referenced_ids="tv_num,tv_total,guideline3,tv_max,tv_min,common_dialog_ok_btn,view_bg,tv_avg,common_dialog_title_text" />
+        app:constraint_referenced_ids="tv_num,tv_total,guideline3,tv_max,tv_min,common_dialog_ok_btn,view_bg,tv_avg,tv_bg,common_dialog_title_text" />
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/group2"
