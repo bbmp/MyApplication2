@@ -108,6 +108,84 @@ public class MaskView extends View {
         }
     }
 
+    //矩形长+
+    public void addWidth() {
+        if (null != bitmap) {
+            for (int i = 0; i<rShape.size(); i++) {
+                Shape shape = rShape.get(i);
+                if (shape.select && shape instanceof Square) {
+                    Square square = (Square) shape;
+                    if (square.x + square.width >= bitmap.getWidth()) //超过图片边界
+                        return;
+
+                    square.width++;
+                    invalidate();
+                    break;
+                }
+            }
+        }
+    }
+    //矩形长-
+    public void decWidth() {
+        if (null != bitmap) {
+            for (int i = 0; i<rShape.size(); i++) {
+                Shape shape = rShape.get(i);
+                if (shape.select && shape instanceof Square) {
+                    Square square = (Square) shape;
+                    if (square.width <= 20) //不小于20像素
+                        return;
+                    square.width--;
+                    invalidate();
+                    break;
+                }
+            }
+        }
+    }
+    //矩形高+
+    public void addHeight() {
+        if (null != bitmap) {
+            for (int i = 0; i<rShape.size(); i++) {
+                Shape shape = rShape.get(i);
+                if (shape.select && shape instanceof Square) {
+                    Square square = (Square) shape;
+                    if (square.y + square.height >= bitmap.getHeight()) //超过图片边界
+                        return;
+
+                    square.height++;
+                    invalidate();
+                    break;
+                }
+            }
+        }
+    }
+    //矩形高-
+    public void decHeight() {
+        if (null != bitmap) {
+            for (int i = 0; i<rShape.size(); i++) {
+                Shape shape = rShape.get(i);
+                if (shape.select && shape instanceof Square) {
+                    Square square = (Square) shape;
+                    if (square.height <= 20) //不小于20像素
+                        return;
+                    square.height--;
+                    invalidate();
+                    break;
+                }
+            }
+        }
+    }
+
+    //获取矩形个数
+    public int getSquareNum() {
+        int num = 0;
+        for (int i = 0; i<rShape.size(); i++) {
+            Shape shape = rShape.get(i);
+            if (shape instanceof Square)
+                num++;
+        }
+        return num * 15;
+    }
+
     //获取圆个数
     public int getRoundNum() {
         int num = 0;
@@ -131,17 +209,19 @@ public class MaskView extends View {
             invalidate();
         }
     }
-
+    //矩形
     public void addSquare() {
-        for (int i = 0; i< rShape.size(); i++) {
-            rShape.get(i).select = false;
+        if (null != bitmap) {
+            for (int i = 0; i < rShape.size(); i++) {
+                rShape.get(i).select = false;
+            }
+            Square square = new Square(bitmap.getWidth() / 2, bitmap.getHeight() / 2);
+            square.width = initWidth;
+            square.height = initHeight;
+            square.select = true;
+            rShape.add(square);
+            invalidate();
         }
-        Square square = new Square(getWidth()/2-90, getHeight()/2-80);
-        square.width = initWidth;
-        square.height = initHeight;
-        square.select = true;
-        rShape.add(square);
-        invalidate();
     }
 
     @Override
@@ -149,6 +229,10 @@ public class MaskView extends View {
         super.onDraw(canvas);
 
         if (null != bitmap) {
+//            LogUtils.e("getwidth " + getWidth());
+//            LogUtils.e("getheight " + getHeight());
+//            LogUtils.e("bitmap.getWidth() " + bitmap.getWidth());
+//            LogUtils.e("bitmap.getHeight() " + bitmap.getHeight());
             float sx = getWidth() * 1.0f / bitmap.getWidth();
             float sy = getHeight() * 1.0f / bitmap.getHeight();
             scale = sx < sy ? sx : sy;
@@ -324,6 +408,7 @@ public class MaskView extends View {
     //分割方形区域
     public void splitSquare(ColorUtils.CaculateCallback callback) {
         Shape shape = null;
+
         for (int index = 0; index < rShape.size(); index++) {
             shape = rShape.get(index);
 
@@ -338,13 +423,13 @@ public class MaskView extends View {
                 //第一行
                 for (int i=y; i<(y+height/3); i++) {
                     for (int j=x; j<=(x+width); j++) {
-                        if (j < (width/5))
+                        if (j < (x + width/5))
                             square.addArea8(new Point(j, i));
-                        else if (j < (width*2/5))
+                        else if (j < (x + width*2/5))
                             square.addArea9(new Point(j, i));
-                        else if (j <= (width*3/5))
+                        else if (j <= (x + width*3/5))
                             square.addArea2(new Point(j, i));
-                        else if (j <= (width*4/5))
+                        else if (j <= (x + width*4/5))
                             square.addArea10(new Point(j, i));
                         else
                             square.addArea11(new Point(j, i));
@@ -353,13 +438,13 @@ public class MaskView extends View {
                 //第二行
                 for (int i=(y+height/3); i<=(y+height*2/3); i++) {
                     for (int j=x; j<=(x+width); j++) {
-                        if (j < (width/5))
+                        if (j < (x + width/5))
                             square.addArea4(new Point(j, i));
-                        else if (j < (width*2/5))
+                        else if (j < (x + width*2/5))
                             square.addArea3(new Point(j, i));
-                        else if (j <= (width*3/5))
+                        else if (j <= (x + width*3/5))
                             square.addArea1(new Point(j, i));
-                        else if (j <= (width*4/5))
+                        else if (j <= (x + width*4/5))
                             square.addArea6(new Point(j, i));
                         else
                             square.addArea7(new Point(j, i));
@@ -368,22 +453,22 @@ public class MaskView extends View {
                 //第三行
                 for (int i=(y+height*2/3+1); i<=(y+height); i++) {
                     for (int j=x; j<=(x+width); j++) {
-                        if (j < (width/5))
+                        if (j < (x + width/5))
                             square.addArea12(new Point(j, i));
-                        else if (j < (width*2/5))
+                        else if (j < (x + width*2/5))
                             square.addArea13(new Point(j, i));
-                        else if (j <= (width*3/5))
+                        else if (j <= (x + width*3/5))
                             square.addArea5(new Point(j, i));
-                        else if (j <= (width*4/5))
+                        else if (j <= (x + width*4/5))
                             square.addArea14(new Point(j, i));
                         else
                             square.addArea15(new Point(j, i));
                     }
                 }
 
-                square.setColor(bitmap);
+//                square.setColor(bitmap);
 
-                square.caculate(callback);
+                square.caculate(bitmap, callback);
             }
         }
     }
@@ -500,7 +585,7 @@ public class MaskView extends View {
                     }
                 }
 
-                round.setColor(bitmap);
+//                round.setColor(bitmap);
 //        Log.e("Area1", "size=" +Area1.size());
 //        Log.e("Area2", "size=" +Area2.size());
 //        Log.e("Area3", "size=" +Area3.size());
@@ -515,7 +600,7 @@ public class MaskView extends View {
 //        Log.e("Area12", "size=" +Area12.size());
 //        Log.e("Area13", "size=" +Area13.size());
 
-                round.caculate(callback);
+                round.caculate(bitmap, callback);
             }
         }
 //        invalidate();

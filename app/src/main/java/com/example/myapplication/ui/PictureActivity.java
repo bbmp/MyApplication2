@@ -26,6 +26,7 @@ import android.widget.Toast;
 import com.example.myapplication.R;
 import com.example.myapplication.dialog.DialogType2;
 import com.example.myapplication.skin.SkinStatusBarUtils;
+import com.example.myapplication.ui.view.LongClickButton;
 import com.example.myapplication.ui.view.MaskView;
 import com.utils.ColorUtils;
 import com.utils.LogUtils;
@@ -39,9 +40,19 @@ import java.io.InputStream;
 
 public class PictureActivity extends AppCompatActivity {
     private MaskView maskView;
-    private Button btRound, btSquare, btCaculate;
-    private Button btRadd, btRdec;
-    private Group group;
+    private Button btRound, btSquare;
+    //圆半径
+    private LongClickButton btRadd, btRdec;
+    //矩形长
+    private LongClickButton btWadd, btWdec;
+    //矩形高
+    private LongClickButton btHadd, btHdec;
+    //圆
+    private Button caculateRound;
+    //矩形
+    private Button caculateSquare;
+
+    private Group group, group2, group3;
     private TextView tvTotal;
     private static TextView tvNum;
     private static TextView tvMin, tvMax, tvAvg;
@@ -53,27 +64,28 @@ public class PictureActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_picture);
         View mStateBarFixer = findViewById(R.id.status_bar_fix);
-        View mStateBarFixer2 = findViewById(R.id.status_bar_fix2);
         if (mStateBarFixer != null) {
             ViewGroup.LayoutParams layoutParams = mStateBarFixer.getLayoutParams();
             layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
             layoutParams.height = SkinStatusBarUtils.getStatusbarHeight(this);
             mStateBarFixer.setLayoutParams(layoutParams);
         }
-        if (mStateBarFixer2 != null) {
-            ViewGroup.LayoutParams layoutParams = mStateBarFixer2.getLayoutParams();
-            layoutParams.width = SkinStatusBarUtils.getStatusbarHeight(this);
-            layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT;
-            mStateBarFixer2.setLayoutParams(layoutParams);
-        }
+
         maskView = findViewById(R.id.iv_image);
         btRound = findViewById(R.id.add_round);
         btSquare = findViewById(R.id.add_square);
-        btCaculate = findViewById(R.id.caculate);
+        caculateRound = findViewById(R.id.caculate_round);
+        caculateSquare = findViewById(R.id.caculate_square);
         btRadd = findViewById(R.id.tv_radd);
         btRdec = findViewById(R.id.tv_rdec);
+        btWadd = findViewById(R.id.tv_widthadd);
+        btWdec = findViewById(R.id.tv_widthdec);
+        btHadd = findViewById(R.id.tv_heightadd);
+        btHdec = findViewById(R.id.tv_heightdec);
 
         group = findViewById(R.id.group);
+        group2 = findViewById(R.id.group2);
+        group3 = findViewById(R.id.group3);
         tvTotal = findViewById(R.id.tv_total);
         tvNum = findViewById(R.id.tv_num);
         tvMin = findViewById(R.id.tv_min);
@@ -93,7 +105,7 @@ public class PictureActivity extends AppCompatActivity {
             try {
                 Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(uri));
                 //屏幕宽度
-                int width = ScreenUtils.getWidthPixels(this);
+                int width = ScreenUtils.getWidthPixels(this) + SkinStatusBarUtils.getStatusbarHeight(this);// 加上状态栏高度
                 int height = ScreenUtils.getHeightPixels(this);
                 float scale;
 
@@ -110,7 +122,7 @@ public class PictureActivity extends AppCompatActivity {
                     srcHeight = bitmap.getHeight();
                 }
 
-                //缩放
+                //缩放到图片完整显示，宽或高充满屏幕
                 float sw = width*1.0f/srcWidth;
                 float sh = height*1.0f/srcHeight;
                 scale = sw<sh?sw:sh;
@@ -130,11 +142,10 @@ public class PictureActivity extends AppCompatActivity {
                 maskView.addR();
             }
         });
-        btRadd.setOnLongClickListener(new View.OnLongClickListener() {
+        btRadd.setLongClickRepeatListener(new LongClickButton.LongClickRepeatListener() {
             @Override
-            public boolean onLongClick(View v) {
+            public void repeatAction() {
                 maskView.addR();
-                return false;
             }
         });
         btRdec.setOnClickListener(new View.OnClickListener() {
@@ -143,26 +154,29 @@ public class PictureActivity extends AppCompatActivity {
                 maskView.decR();
             }
         });
-        btRdec.setOnLongClickListener(new View.OnLongClickListener() {
+        btRdec.setLongClickRepeatListener(new LongClickButton.LongClickRepeatListener() {
             @Override
-            public boolean onLongClick(View v) {
+            public void repeatAction() {
                 maskView.decR();
-                return false;
             }
         });
         btRound.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 maskView.addRound();
+                group2.setVisibility(View.VISIBLE);
+                btSquare.setVisibility(View.GONE);
             }
         });
         btSquare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 maskView.addSquare();
+                group3.setVisibility(View.VISIBLE);
+                btRound.setVisibility(View.GONE);
             }
         });
-        btCaculate.setOnClickListener(new View.OnClickListener() {
+        caculateRound.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 group.setVisibility(View.VISIBLE);
@@ -190,22 +204,87 @@ public class PictureActivity extends AppCompatActivity {
 
                     }
                 });
-//                ColorUtils.caculate(bitmap, new ColorUtils.CaculateCallback() {
-//                    @Override
-//                    public void onSuccess(double score) {
-//                        runOnUiThread(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                Toast.makeText(PictureActivity.this, "Score= "+ score, Toast.LENGTH_LONG).show();
-//                            }
-//                        });
-//                    }
-//
-//                    @Override
-//                    public void onFailed() {
-//
-//                    }
-//                });
+
+            }
+        });
+        btWadd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                maskView.addWidth();
+            }
+        });
+        btWadd.setLongClickRepeatListener(new LongClickButton.LongClickRepeatListener() {
+            @Override
+            public void repeatAction() {
+                maskView.addWidth();
+            }
+        });
+        btWdec.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                maskView.decWidth();
+            }
+        });
+        btWdec.setLongClickRepeatListener(new LongClickButton.LongClickRepeatListener() {
+            @Override
+            public void repeatAction() {
+                maskView.decWidth();
+            }
+        });
+        btHadd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                maskView.addHeight();
+            }
+        });
+        btHadd.setLongClickRepeatListener(new LongClickButton.LongClickRepeatListener() {
+            @Override
+            public void repeatAction() {
+                maskView.addHeight();
+            }
+        });
+        btHdec.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                maskView.decHeight();
+            }
+        });
+        btHdec.setLongClickRepeatListener(new LongClickButton.LongClickRepeatListener() {
+            @Override
+            public void repeatAction() {
+                maskView.decHeight();
+            }
+        });
+        caculateSquare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                group.setVisibility(View.VISIBLE);
+                total = 0;
+                max = 0;
+                min = Integer.MAX_VALUE;
+
+                tvTotal.setText("总块数   " + maskView.getSquareNum());
+                final int[] num = {0};
+                maskView.splitSquare(new ColorUtils.CaculateCallback() {
+                    @Override
+                    public void onSuccess(double score, double bgpercent) {
+                        synchronized (num) {
+                            num[0]++;
+                            Message msg = handler.obtainMessage();
+                            Bundle bundle = new Bundle();
+                            bundle.putInt("num", num[0]);
+                            bundle.putDouble("score", score);
+                            bundle.putDouble("bgpercent", bgpercent);
+                            msg.setData(bundle);
+                            handler.sendMessage(msg);
+                        }
+                    }
+
+                    @Override
+                    public void onFailed() {
+
+                    }
+                });
             }
         });
     }

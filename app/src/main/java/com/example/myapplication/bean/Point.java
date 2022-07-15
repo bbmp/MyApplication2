@@ -9,4 +9,10 @@ public class Point {
         this.x = x;
         this.y = y;
     }
+
+    public Point(int x, int y, int color) {
+        this.x = x;
+        this.y = y;
+        this.color = color;
+    }
 }

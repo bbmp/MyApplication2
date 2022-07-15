@@ -163,21 +163,23 @@ public class Square extends Shape{
         }
     }
 
-    public void caculate(ColorUtils.CaculateCallback callback) {
-        ColorUtils.caculate(Area1, "a1", callback);
-        ColorUtils.caculate(Area2, "a2", callback);
-        ColorUtils.caculate(Area3, "a3", callback);
-        ColorUtils.caculate(Area4, "a4",callback);
-        ColorUtils.caculate(Area5, "a5", callback);
-        ColorUtils.caculate(Area6, "a6", callback);
-        ColorUtils.caculate(Area7, "a7", callback);
-        ColorUtils.caculate(Area8, "a8", callback);
-        ColorUtils.caculate(Area9, "a9", callback);
-        ColorUtils.caculate(Area10, "a10", callback);
-        ColorUtils.caculate(Area11, "a11", callback);
-        ColorUtils.caculate(Area12, "a12", callback);
-        ColorUtils.caculate(Area13, "a13", callback);
-        ColorUtils.caculate(Area14, "a14", callback);
-        ColorUtils.caculate(Area15, "a15", callback);
+    public void caculate(Bitmap bitmap, ColorUtils.CaculateCallback callback) {
+        if (null == bitmap)
+            throw new IllegalArgumentException("bitmap is null");
+        ColorUtils.caculate(bitmap, Area1, "a1", callback);
+        ColorUtils.caculate(bitmap, Area2, "a2", callback);
+        ColorUtils.caculate(bitmap, Area3, "a3", callback);
+        ColorUtils.caculate(bitmap, Area4, "a4",callback);
+        ColorUtils.caculate(bitmap, Area5, "a5", callback);
+        ColorUtils.caculate(bitmap, Area6, "a6", callback);
+        ColorUtils.caculate(bitmap, Area7, "a7", callback);
+        ColorUtils.caculate(bitmap, Area8, "a8", callback);
+        ColorUtils.caculate(bitmap, Area9, "a9", callback);
+        ColorUtils.caculate(bitmap, Area10, "a10", callback);
+        ColorUtils.caculate(bitmap, Area11, "a11", callback);
+        ColorUtils.caculate(bitmap, Area12, "a12", callback);
+        ColorUtils.caculate(bitmap, Area13, "a13", callback);
+        ColorUtils.caculate(bitmap, Area14, "a14", callback);
+        ColorUtils.caculate(bitmap, Area15, "a15", callback);
     }
 }

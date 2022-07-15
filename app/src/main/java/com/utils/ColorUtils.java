@@ -89,7 +89,7 @@ public class ColorUtils {
     //同步对象
     private static Object object = new Object();
 
-    public static void caculate(List<Point> points, String area, CaculateCallback callback) {
+    public static void caculate(Bitmap bitmap, List<Point> points, String area, CaculateCallback callback) {
         if (null != points) {
             new Thread() {
                 @Override
@@ -99,7 +99,8 @@ public class ColorUtils {
                     double totalScore = 0;
 
                     for (int i = 0; i < points.size(); i++) {
-                        int clr = points.get(i).color;
+//                        int clr = points.get(i).color;
+                        int clr = bitmap.getPixel(points.get(i).x, points.get(i).y);
                         int red = (clr & 0x00ff0000) >> 16; // 取⾼两位
                         int green = (clr & 0x0000ff00) >> 8; // 取中两位
                         int blue = clr & 0x000000ff; // 取低两位
